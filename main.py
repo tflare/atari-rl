@@ -5,32 +5,32 @@ import gym
 from agent_action import AgentAction
 
 
-def print_avarage_result(episode_times, time, total_reward):
-    print("avarage {} steps".format((time+1) / episode_times))
+def print_avarage_result(episode_times, step, total_reward):
+    print("avarage {} steps".format((step+1) / episode_times))
     print("avarage_reward was {}".format(total_reward / episode_times)) 
 
 
-def print_result(episode_times, time, total_reward):
+def print_result(episode_times, step, total_reward):
     print("Episode {}:".format(episode_times))
-    print(" {} steps".format((time+1)))
+    print(" {} steps".format((step+1)))
     print("reward was {}".format(total_reward)) 
 
 
 def debug_action_output(action_list, episode):
     
     import os
-    import json
+    import csv
     
     script_dir = os.path.abspath(os.path.dirname(__file__))
     debug_dir  = os.path.join(script_dir, 'debug')
     if(os.path.isdir(debug_dir) == False):
         os.mkdir(debug_dir)    
     
-    debug_file_path =os.path.join(debug_dir, "actionlist{}.txt".format(episode))
+    debug_file_path =os.path.join(debug_dir, "actionlist{}.csv".format(episode))
     
     with open(debug_file_path, 'w') as file:
-        for inner_list in action_list:
-            json.dump(inner_list, file)
+        writer = csv.writer(file, lineterminator='\n')
+        writer.writerows(action_list)
 
 
 def pacman_start():
@@ -41,50 +41,61 @@ def atari_start(game_name):
     
     atari_env = gym.make(game_name)
     
-    all_time = 0
+    all_step = 0
     all_reward = 0
     episode_times = 20
     best_total_reward = 0
     best_action_list = []
     
     for episode in range(episode_times):
+        
         atari_env.reset()
         
-        #
-        for _ in range(200):
-            atari_env.step(0)
-              
+        """
+        NO_OP_STEPS = 30 
+        for diff in range(0, diff_max): 
+            env.step(0)
+        """
+  
         total_reward = 0
         action_step = 0        
         action_list = []
+        aaction = AgentAction()
+        done = False
 
-        for time in range(2000):
-            atari_env.render()
-            
-            aaction = AgentAction()
-            action = aaction.action_select(action_step, best_action_list)
+        while not done:
+
+            if(action_step < 88):
+                action = 0
+            else:
+                action = aaction.action_select(action_step, best_action_list)                
+                
             action_step = action_step + 1
            
             observation, reward, done, info = atari_env.step(action)
+            atari_env.render()
+            
             lives = float(atari_env.ale.lives())
             
             action_list.append([action, reward, lives])
             total_reward = total_reward + reward
             if done:
-                print_result(episode, time, total_reward)
+                print_result(episode, action_step, total_reward)
                 
-                all_time = all_time + time
+                all_step = all_step + action_step
                 all_reward = all_reward + total_reward
                 
                 if best_total_reward < total_reward:
                     best_total_reward = total_reward
                     best_action_list = action_list
                     
+                    print(best_total_reward)
+                    
                 debug_action_output(action_list, episode)
                 
                 break
                 
-    print_avarage_result(episode_times, all_time, all_reward)
+    print_avarage_result(episode_times, all_step, all_reward)
     atari_env.monitor.close()
     
 

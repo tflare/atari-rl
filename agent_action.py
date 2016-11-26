@@ -3,7 +3,7 @@
 import random
 
 class AgentAction:
-    
+   
     def __random_action(self):
     
         """
@@ -23,28 +23,13 @@ class AgentAction:
         
         # ToDo Q-Learning ADD
 
-        
         reward = 0
         diff_max = 5
 
-
-        
         if len(best_action_list) > (action_step + diff_max):
             for diff in range(0, diff_max):         
                 reward = reward + best_action_list[action_step + diff][1]
-
-        """
-        attention_max = 20
-        if len(best_action_list) > (action_step + delay_step + attention_max):
-            for diff in range(0, attention_max):         
-                buffer_reward = best_action_list[action_step + delay_step + diff][1]
-                
-                # 10ポイントは通常のポイント、それ以上ということは敵を倒したときのもの
-                if buffer_reward > 10: 
-                    reward = buffer_reward
-                    break
-        """
-                
+                       
         return reward
 
     def __reverse_action(self, action):
@@ -76,13 +61,15 @@ class AgentAction:
         # アクション時の獲得rewardが0を超えるなら、ベストスコア時のアクションを実施する。
          # それ以外はランダムな動きをする。
         
-        best_action_list = self.__lives_lost_reverse(action_step, best_action_list)
+
         action = 0
+        
         if len(best_action_list) > action_step  \
         and self.__action_reward(best_action_list, action_step) > 0:
             action = best_action_list[action_step][0]
         else:
             action = self.__random_action()
+     
     
         return action
             
