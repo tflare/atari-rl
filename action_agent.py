@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 
 import random
+import numpy as np
+from skimage.color import rgb2gray
+from skimage.transform import resize
 
 class ActionAgent:
    
@@ -69,9 +72,19 @@ class ActionAgent:
             action = best_action_list[action_step][0]
         else:
             action = self.__random_action()
-     
-    
+
         return action
+        
+    def get_initial_state(self, observation, last_observation):
+        
+        frame_width = 84
+        frame_height = 84
+        state_length = 4
+        
+        processed_observation = np.maximum(observation, last_observation)
+        processed_observation = np.uint8(resize(rgb2gray(processed_observation), (frame_width, frame_height)) * 255)
+        state = [processed_observation for _ in range(state_length)]
+        return np.stack(state, axis=0)
             
     
 

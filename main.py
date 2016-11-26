@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import gym
+import os
+import csv
 
 from action_agent import ActionAgent
 
@@ -17,10 +19,7 @@ def print_result(episode_times, step, total_reward):
 
 
 def debug_action_output(action_list, episode):
-    
-    import os
-    import csv
-    
+
     script_dir = os.path.abspath(os.path.dirname(__file__))
     debug_dir  = os.path.join(script_dir, 'debug')
     if(os.path.isdir(debug_dir) == False):
@@ -60,23 +59,23 @@ def atari_start(game_name):
         no_op_steps = 88
         for before_step in range(no_op_steps):
             observation, _, _, _ = atari_env.step(0)
-            if(no_op_steps - 1 == 87):
-                last_observation = observation
+            #if(no_op_steps - 1 == 87):
+                #last_observation = observation
 
         #state = act_agent.get_initial_state(observation, last_observation)
             
         while not done:
-
+            #last_observation = observation
             action = act_agent.action_select(action_step, best_action_list)                
-                
+            
             action_step = action_step + 1
            
             observation, reward, done, info = atari_env.step(action)
             atari_env.render()
             
-            lives = float(atari_env.ale.lives())
+            #lives = float(atari_env.ale.lives())
             
-            action_list.append([action, reward, lives])
+            action_list.append([action, reward])
             total_reward = total_reward + reward
             if done:
                 print_result(episode, action_step, total_reward)
