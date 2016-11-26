@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 import gym
-import json
 
 from agent_action import AgentAction
 
@@ -18,7 +17,18 @@ def print_result(episode_times, time, total_reward):
 
 
 def debug_action_output(action_list, episode):
-    with open("actionlist{}.txt".format(episode), 'w') as file:
+    
+    import os
+    import json
+    
+    script_dir = os.path.abspath(os.path.dirname(__file__))
+    debug_dir  = os.path.join(script_dir, 'debug')
+    if(os.path.isdir(debug_dir) == False):
+        os.mkdir(debug_dir)    
+    
+    debug_file_path =os.path.join(debug_dir, "actionlist{}.txt".format(episode))
+    
+    with open(debug_file_path, 'w') as file:
         for inner_list in action_list:
             json.dump(inner_list, file)
 
