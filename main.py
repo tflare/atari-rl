@@ -2,7 +2,7 @@
 
 import gym
 
-from agent_action import AgentAction
+from action_agent import ActionAgent
 
 
 def print_avarage_result(episode_times, step, total_reward):
@@ -49,26 +49,25 @@ def atari_start(game_name):
     
     for episode in range(episode_times):
         
-        atari_env.reset()
-        
-        """
-        NO_OP_STEPS = 30 
-        for diff in range(0, diff_max): 
-            env.step(0)
-        """
+        observation = atari_env.reset()
   
         total_reward = 0
         action_step = 0        
         action_list = []
-        aaction = AgentAction()
+        act_agent = ActionAgent()
         done = False
 
+        no_op_steps = 88
+        for before_step in range(no_op_steps):
+            observation, _, _, _ = atari_env.step(0)
+            if(no_op_steps - 1 == 87):
+                last_observation = observation
+
+        #state = act_agent.get_initial_state(observation, last_observation)
+            
         while not done:
 
-            if(action_step < 88):
-                action = 0
-            else:
-                action = aaction.action_select(action_step, best_action_list)                
+            action = act_agent.action_select(action_step, best_action_list)                
                 
             action_step = action_step + 1
            

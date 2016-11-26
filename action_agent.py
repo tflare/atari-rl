@@ -2,7 +2,7 @@
 
 import random
 
-class AgentAction:
+class ActionAgent:
    
     def __random_action(self):
     
