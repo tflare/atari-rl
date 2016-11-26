@@ -40,7 +40,8 @@ def atari_start(game_name):
     for episode in range(episode_times):
         atari_env.reset()
         
-        for _ in range(100):
+        #
+        for _ in range(200):
             atari_env.step(0)
               
         total_reward = 0
