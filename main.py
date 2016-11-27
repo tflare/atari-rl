@@ -53,7 +53,7 @@ def atari_start(game_name, enable_action):
         act_agent = Agent(enable_action)
         done = False
 
-        no_op_steps = 88
+        no_op_steps = 5
         for before_step in range(no_op_steps):
             observation, _, _, _ = atari_env.step(0)
             #atari_env.render()
@@ -68,9 +68,9 @@ def atari_start(game_name, enable_action):
             atari_env.render()
             
             #lives = float(atari_env.ale.lives())
-            frame_number = float(atari_env.ale.getFrameNumber())
+            ep_frame_number = float(atari_env.ale.getEpisodeFrameNumber())
             
-            action_list.append([action, reward, frame_number])
+            action_list.append([action, reward, ep_frame_number])
             total_reward = total_reward + reward
 
 
