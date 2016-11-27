@@ -4,7 +4,7 @@ import gym
 import os
 import csv
 
-from action_agent import ActionAgent
+from agent import Agent
 
 
 def print_avarage_result(episode_times, step, total_reward):
@@ -35,6 +35,7 @@ def debug_action_output(action_list, episode):
 def atari_start(game_name, enable_action):
     
     atari_env = gym.make(game_name)
+    atari_env.monitor.start('/tmp/' + game_name, force=True)
     
     all_step = 0
     all_reward = 0
@@ -49,13 +50,13 @@ def atari_start(game_name, enable_action):
         total_reward = 0
         action_step = 0        
         action_list = []
-        act_agent = ActionAgent(enable_action)
+        act_agent = Agent(enable_action)
         done = False
 
-        no_op_steps = 5
+        no_op_steps = 88
         for before_step in range(no_op_steps):
             observation, _, _, _ = atari_env.step(0)
-            atari_env.render()
+            #atari_env.render()
             
         while not done:
 
@@ -71,21 +72,20 @@ def atari_start(game_name, enable_action):
             
             action_list.append([action, reward, frame_number])
             total_reward = total_reward + reward
-            if done:
-                print_result(episode, action_step, total_reward)
-                
-                all_step = all_step + action_step
-                all_reward = all_reward + total_reward
-                
-                if best_total_reward < total_reward:
-                    best_total_reward = total_reward
-                    best_action_list = action_list
-                    
-                    print(best_total_reward)
-                    
-                debug_action_output(action_list, episode)
-                
-                break
+
+
+        print_result(episode, action_step, total_reward)
+        
+        all_step = all_step + action_step
+        all_reward = all_reward + total_reward
+        
+        if best_total_reward < total_reward:
+            best_total_reward = total_reward
+            best_action_list = action_list
+            
+            print(best_total_reward)
+            
+        debug_action_output(action_list, episode)
                 
     print_avarage_result(episode_times, all_step, all_reward)
     atari_env.monitor.close()

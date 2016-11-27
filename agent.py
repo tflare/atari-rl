@@ -2,17 +2,17 @@
 
 import random
 
-class ActionAgent:
+class Agent:
 
     def __init__(self, enable_action):
 
         self.enable_action = enable_action
+        self.action_time = 0
         
     def __random_action(self):
     
-        return random.choice(self.enable_action)
-    
-    
+        return(random.choice(self.enable_action))
+ 
     def __action_reward(self, best_action_list, action_step):
         
         # ToDo Q-Learning ADD
@@ -36,12 +36,14 @@ class ActionAgent:
         
 
         action = 0
-        
-        if len(best_action_list) > action_step  \
-        and self.__action_reward(best_action_list, action_step) > 0:
-            action = best_action_list[action_step][0]
-        else:
-            action = self.__random_action()
+        if self.action_time % 4 == 0:        
+            if len(best_action_list) > action_step  \
+            and self.__action_reward(best_action_list, action_step) > 0:
+                action = best_action_list[action_step][0]
+            else:
+                action = self.__random_action()
+                
+        self.action_time = self.action_time + 1
          
         return action
 
