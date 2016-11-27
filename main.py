@@ -32,11 +32,10 @@ def debug_action_output(action_list, episode):
         writer.writerows(action_list)
 
 
-def pacman_start():
-    atari_start('MsPacman-v0')
 
 
-def atari_start(game_name):
+
+def atari_start(game_name, enable_action):
     
     atari_env = gym.make(game_name)
     
@@ -53,13 +52,13 @@ def atari_start(game_name):
         total_reward = 0
         action_step = 0        
         action_list = []
-        act_agent = ActionAgent()
+        act_agent = ActionAgent(enable_action)
         done = False
 
-        no_op_steps = 88
+        no_op_steps = 100
         for before_step in range(no_op_steps):
             observation, _, _, _ = atari_env.step(0)
-            #if(no_op_steps - 1 == 87):
+            #if(no_op_steps - 1 == no_op_steps -1):
                 #last_observation = observation
 
         #state = act_agent.get_initial_state(observation, last_observation)

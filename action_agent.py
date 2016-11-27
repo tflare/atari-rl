@@ -6,20 +6,14 @@ from skimage.color import rgb2gray
 from skimage.transform import resize
 
 class ActionAgent:
-   
+
+    def __init__(self, enable_action):
+
+        self.enable_action = enable_action
+        
     def __random_action(self):
     
-        """
-        ACTION_MEANING = {
-            0 : "NOOP",
-            2 : "UP",
-            3 : "RIGHT",
-            4 : "LEFT",
-            5 : "DOWN",
-        }
-        """
-
-        return random.choice([0, 2, 3, 4, 5])
+        return random.choice(self.enable_action)
     
     
     def __action_reward(self, best_action_list, action_step):
@@ -72,9 +66,10 @@ class ActionAgent:
             action = best_action_list[action_step][0]
         else:
             action = self.__random_action()
-
+         
         return action
-        
+
+  
     def get_initial_state(self, observation, last_observation):
         
         frame_width = 84
