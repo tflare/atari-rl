@@ -2,9 +2,6 @@
 
 AIGYMでの動作を前提としています。
 
-以下を参考にさせていただいています。
-
-[DQNをKerasとTensorFlowとOpenAI Gymで実装する](https://elix-tech.github.io/ja/2016/06/29/dqn-ja.html)
 
 ##更新履歴
 
