@@ -32,10 +32,10 @@ def debug_action_output(action_list, episode):
         writer.writerows(action_list)
 
 
-def atari_start(game_name, enable_action):
+def atari_start(game_name, enable_action, render = True):
     
-    atari_env = gym.make(game_name)
-    atari_env.monitor.start('/tmp/' + game_name, force=True)
+    gym_env = gym.make(game_name)
+    gym_env.monitor.start('/tmp/' + game_name, force=True)
     
     all_step = 0
     all_reward = 0
@@ -45,7 +45,7 @@ def atari_start(game_name, enable_action):
     
     for episode in range(episode_times):
         
-        observation = atari_env.reset()
+        observation = gym_env.reset()
   
         total_reward = 0
         action_step = 0        
@@ -53,10 +53,13 @@ def atari_start(game_name, enable_action):
         act_agent = Agent(enable_action)
         done = False
 
-        no_op_steps = 5
-        for before_step in range(no_op_steps):
-            observation, _, _, _ = atari_env.step(0)
-            #atari_env.render()
+        #初期化　何故かこれぐらいやらないとうまくいかない。
+        #自分のバグ？
+        ep_frame_number = 0
+        while ep_frame_number < 258:
+            observation, _, _, _ = gym_env.step(0)
+            ep_frame_number = float(gym_env.ale.getEpisodeFrameNumber())
+            gym_env.render()
             
         while not done:
 
@@ -64,11 +67,13 @@ def atari_start(game_name, enable_action):
             
             action_step = action_step + 1
            
-            observation, reward, done, info = atari_env.step(action)
-            atari_env.render()
+            observation, reward, done, info = gym_env.step(action)
+            
+            if render:
+                gym_env.render()
             
             #lives = float(atari_env.ale.lives())
-            ep_frame_number = float(atari_env.ale.getEpisodeFrameNumber())
+            ep_frame_number = float(gym_env.ale.getEpisodeFrameNumber())
             
             action_list.append([action, reward, ep_frame_number])
             total_reward = total_reward + reward
@@ -88,7 +93,7 @@ def atari_start(game_name, enable_action):
         debug_action_output(action_list, episode)
                 
     print_avarage_result(episode_times, all_step, all_reward)
-    atari_env.monitor.close()
+    gym_env.monitor.close()
     
 
 

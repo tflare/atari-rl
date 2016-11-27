@@ -13,5 +13,5 @@ ACTION_MEANING = {
 """
 
 enable_action = [0, 2, 3, 4, 5]
-
-main.atari_start('MsPacman-v0', enable_action)
+render = True
+main.atari_start('MsPacman-v0', enable_action, render)
