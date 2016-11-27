@@ -32,9 +32,6 @@ def debug_action_output(action_list, episode):
         writer.writerows(action_list)
 
 
-
-
-
 def atari_start(game_name, enable_action):
     
     atari_env = gym.make(game_name)
@@ -61,7 +58,7 @@ def atari_start(game_name, enable_action):
             atari_env.render()
             
         while not done:
-            #last_observation = observation
+
             action = act_agent.action_select(action_step, best_action_list)                
             
             action_step = action_step + 1
