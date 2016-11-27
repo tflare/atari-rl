@@ -39,7 +39,7 @@ def atari_start(game_name, enable_action, render = True):
     
     all_step = 0
     all_reward = 0
-    episode_times = 20
+    episode_times = 5
     best_total_reward = 0
     best_action_list = []
     
@@ -59,7 +59,7 @@ def atari_start(game_name, enable_action, render = True):
         while ep_frame_number < 258:
             observation, _, _, _ = gym_env.step(0)
             ep_frame_number = float(gym_env.ale.getEpisodeFrameNumber())
-            gym_env.render()
+            #gym_env.render()
             
         while not done:
 
