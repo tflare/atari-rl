@@ -48,14 +48,9 @@ class SimpleAgent(Agent):
             and self.__action_reward(best_action_list, action_step) > 0:
                 action = best_action_list[action_step][0]
             else:
-                action = self._random_action()
+                action = self.random_action()
                 
         self.action_time = self.action_time + 1
          
         return action
-
-  
-
-            
-    
 

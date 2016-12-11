@@ -92,5 +92,3 @@ def atari_start(game_name, agent, render = True):
     print_avarage_result(episode_times, all_step, all_reward)
     gym_env.monitor.close()
     
-
-
