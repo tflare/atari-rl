@@ -4,8 +4,6 @@ import gym
 import os
 import csv
 
-from agent import Agent
-
 
 def print_avarage_result(episode_times, step, total_reward):
     print("avarage {} steps".format((step+1) / episode_times))
@@ -32,7 +30,7 @@ def debug_action_output(action_list, episode):
         writer.writerows(action_list)
 
 
-def atari_start(game_name, enable_action, render = True):
+def atari_start(game_name, agent, render = True):
     
     gym_env = gym.make(game_name)
     gym_env.monitor.start('/tmp/' + game_name, force=True)
@@ -50,7 +48,6 @@ def atari_start(game_name, enable_action, render = True):
         total_reward = 0
         action_step = 0        
         action_list = []
-        act_agent = Agent(enable_action)
         done = False
 
         #初期化　何故かこれぐらいやらないとうまくいかない。
@@ -63,7 +60,7 @@ def atari_start(game_name, enable_action, render = True):
             
         while not done:
 
-            action = act_agent.action_select(action_step, best_action_list)                
+            action = agent.action_select(action_step, best_action_list)                
             
             action_step = action_step + 1
            

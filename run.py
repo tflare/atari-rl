@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import main
+from agent.simple import SimpleAgent
+from agent.random import RandomAgent
 
 """
 ACTION_MEANING = {
@@ -13,5 +15,8 @@ ACTION_MEANING = {
 """
 
 enable_action = [0, 2, 3, 4, 5]
+
+#agent = SimpleAgent(enable_action)
+agent = RandomAgent(enable_action)
 render = True
-main.atari_start('MsPacman-v0', enable_action, render)
+main.atari_start('MsPacman-v0', agent, render)

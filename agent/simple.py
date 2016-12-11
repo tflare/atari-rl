@@ -1,17 +1,13 @@
 # -*- coding: utf-8 -*-
 
-import random
+from agent.agent import Agent
 
-class Agent:
+class SimpleAgent(Agent):
 
     def __init__(self, enable_action):
 
-        self.enable_action = enable_action
+        super().__init__(enable_action)
         self.action_time = 0
-        
-    def __random_action(self):
-    
-        return(random.choice(self.enable_action))
  
     def __action_reward(self, best_action_list, action_step):
         
@@ -52,7 +48,7 @@ class Agent:
             and self.__action_reward(best_action_list, action_step) > 0:
                 action = best_action_list[action_step][0]
             else:
-                action = self.__random_action()
+                action = self._random_action()
                 
         self.action_time = self.action_time + 1
          
